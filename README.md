@@ -32,11 +32,30 @@ Finally, we use the RTPR framework to evaluate retrieval models on the ProPres d
 ### Creating the ProPres Dataset
 ![Creating ProPres](creating_propres.png)
 
+To create the ProPres dataset, we begin with 1,000 research papers and their corresponding conference presentations. We then
+
+1. Use MinerU to extract the segments from each paper
+2. Use Whisper to transcribe each presentation
+
+Then, we use Gemini to align the paper segments to the presentation transcript. This creates a dataset of transcript windows coupled to paper segments. 
+
 ### Evaluation
 ![Evaluation Overview](eval_overview.png)
+
+Using this dataset, we consider the aligned segment "relevant" to the corresponding transcript window. With this, we can test to see how well retrieval models can find the aligned segments given the transcript as a "query". Note that the retrieval happens over all paper segments, not just the segments from that particular paper.
 
 #### Discovery Metrics
 ![Discovery Metrics](discovery_metrics.png)
 
+The Discovery Metrics measure the general ability for retrieval models to find the correct information. For example, suppose we set $K=3$ and $T=8$. This means that
+
+1. Have the model make $j$ predictions at each timestep in the transcript
+2. Make predictions for $K=8$ timesteps from the beginning of the alignment window
+3. Select the top $K=3$ scored predictions from all predictions made in this window.
+
+From the resulting ranked list, we can then measure Recall, nDCG, and CollectionPrecision.
+
 #### Utility Metrics
 ![Utility Metrics](utility_metrics.png)
+
+The Utility Metrics measure the ability for the retrieval models to show the correct information. For example, we consider all predictions made in the transcript alignment window, and the model must decide the cutoff. Then, from these predictions, we can measure Precision, Recall, Delay, as well as the number of windows with no predictions, with no correct predictions, and the change in predictions.
