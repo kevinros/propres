@@ -31,3 +31,12 @@ Finally, we use the RTPR framework to evaluate retrieval models on the ProPres d
 
 ### Creating the ProPres Dataset
 ![Creating ProPres](creating_propres.png)
+
+### Evaluation
+![Evaluation Overview](eval_overview.png)
+
+#### Discovery Metrics
+![Discovery Metrics](discovery_metrics.png)
+
+#### Utility Metrics
+![Utility Metrics](utility_metrics.png)
